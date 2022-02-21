@@ -1,10 +1,12 @@
 from django.contrib import admin
 
 from config.models import Link, SideBar
-from utils.custom_site import Register
+from iblog.site.admin.model_admin import mixin_owner_admin
+from iblog.site.custom_admin import Register
 
 
 @Register(Link)
+@mixin_owner_admin
 class LinkAdmin(admin.ModelAdmin):
     list_display = ('title', 'href', 'status', 'weight', 'created_time')
     fields = ('title', 'href', 'status', 'weight')

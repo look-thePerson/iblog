@@ -5,7 +5,8 @@ from django.db.models import Model
 
 from blog.models import Post, Category, Tag
 from blog.admin_forms import PostAdminForm
-from utils.custom_site import Register
+from iblog.site.admin.model_admin import mixin_owner_admin
+from iblog.site.custom_admin import Register
 
 
 
@@ -26,6 +27,7 @@ class CategoryOwnerFilter(admin.SimpleListFilter):
 
 
 @Register(Category)
+@mixin_owner_admin
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'status', 'is_nav', 'created_time')
     fields = ('name', 'status', 'is_nav')
@@ -37,6 +39,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 @Register(Tag)
+@mixin_owner_admin
 class TagAdmin(admin.ModelAdmin):
     list_display = ('name', 'status', 'created_time')
     fields = ('name', 'status')
@@ -47,6 +50,7 @@ class TagAdmin(admin.ModelAdmin):
 
 
 @Register(Post)
+@mixin_owner_admin
 class PostAdmin(admin.ModelAdmin):
     list_display = [
         'title', 'category', 'status',
@@ -66,10 +70,3 @@ class PostAdmin(admin.ModelAdmin):
         return format_html('<a href="{}">编辑</a>',
                            reverse('cus_admin:blog_post_change', args=(obj.id, )))
     operator.short_description = '操作'
-
-    def save_model(self, request, obj: Category, form, change) -> None:
-        obj.owner = request.user
-        super(PostAdmin, self).save_model(request, obj, form, change)
-
-    def get_queryset(self, request):
-        return super(PostAdmin, self).get_queryset(request).filter(owner=request.user)
