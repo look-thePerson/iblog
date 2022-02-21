@@ -1,9 +1,10 @@
 from django.contrib import admin
 
 from config.models import Link, SideBar
+from utils.custom_site import Register
 
 
-@admin.register(Link)
+@Register(Link)
 class LinkAdmin(admin.ModelAdmin):
     list_display = ('title', 'href', 'status', 'weight', 'created_time')
     fields = ('title', 'href', 'status', 'weight')
@@ -13,7 +14,7 @@ class LinkAdmin(admin.ModelAdmin):
         return super(LinkAdmin, self).save_model(request, obj, form, change)
 
 
-@admin.register(SideBar)
+@Register(SideBar)
 class SideBarAdmin(admin.ModelAdmin):
     list_display = ('title', 'display_type', 'content', 'created_time')
     fields = ('title', 'display_type', 'content')

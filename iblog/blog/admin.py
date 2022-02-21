@@ -1,9 +1,12 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
+from django.db.models import Model
 
 from blog.models import Post, Category, Tag
-from blog.adminforms import PostAdminForm
+from blog.admin_forms import PostAdminForm
+from utils.custom_site import Register
+
 
 
 class CategoryOwnerFilter(admin.SimpleListFilter):
@@ -22,7 +25,7 @@ class CategoryOwnerFilter(admin.SimpleListFilter):
         return queryset
 
 
-@admin.register(Category)
+@Register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'status', 'is_nav', 'created_time')
     fields = ('name', 'status', 'is_nav')
@@ -33,7 +36,7 @@ class CategoryAdmin(admin.ModelAdmin):
         super(CategoryAdmin, self).save_model(request, obj, form, change)
 
 
-@admin.register(Tag)
+@Register(Tag)
 class TagAdmin(admin.ModelAdmin):
     list_display = ('name', 'status', 'created_time')
     fields = ('name', 'status')
@@ -43,7 +46,7 @@ class TagAdmin(admin.ModelAdmin):
         super(TagAdmin, self).save_model(request, obj, form, change)
 
 
-@admin.register(Post)
+@Register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = [
         'title', 'category', 'status',
@@ -61,7 +64,7 @@ class PostAdmin(admin.ModelAdmin):
 
     def operator(self, obj):
         return format_html('<a href="{}">编辑</a>',
-                           reverse('admin:blog_post_change', args=(obj.id, )))
+                           reverse('cus_admin:blog_post_change', args=(obj.id, )))
     operator.short_description = '操作'
 
     def save_model(self, request, obj: Category, form, change) -> None:
