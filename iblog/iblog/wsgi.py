@@ -11,6 +11,9 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'iblog.settings')
+from iblog.settings import settings_model
+
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_model)
 
 application = get_wsgi_application()

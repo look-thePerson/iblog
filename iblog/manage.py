@@ -3,10 +3,12 @@
 import os
 import sys
 
+from iblog.settings import settings_model
+
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'iblog.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_model)
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

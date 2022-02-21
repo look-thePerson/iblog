@@ -11,6 +11,8 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'iblog.settings')
+from iblog.settings import settings_model
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_model)
 
 application = get_asgi_application()
